@@ -15,8 +15,8 @@ KeywordView.setup = function (el) {
 
 KeywordView.render = function (data = []) {
   this.el.innerHTML = data.length ? this.getKeywordsHtml(data) : this.messages.NO_KEYWORDS
-  this.show()
   this.bindClickEvent()
+  this.show()
   return this
 }
 
@@ -26,15 +26,15 @@ KeywordView.getKeywordsHtml = function (data) {
     return html
   }, '<ul class="list">') + "</ul>"
 }
-
+//
 KeywordView.bindClickEvent = function() {
   Array.from(this.el.querySelectorAll('li')).forEach(li => {
     li.addEventListener('click', e => this.onClickKeyword(e))
   })
 }
-
-KeywordView.onClickKeyword = function (e) {
-  const {keyword} = e.currentTarget.dataset
+//
+KeywordView.onClickKeyword = function ({currentTarget}) {
+  const {keyword} = currentTarget.dataset//https://developer.mozilla.org/ko/docs/Web/API/HTMLElement/dataset
   this.emit('@click', {keyword})
 }
 

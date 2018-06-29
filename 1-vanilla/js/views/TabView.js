@@ -11,26 +11,35 @@ TabView.tabNames = {
 
 TabView.setup = function(el) {
   this.init(el)
-  this.bindClick()
+  this.bindEvents()
   return this
 }
 
 TabView.setActiveTab = function (tabName) {
-  Array.from(this.el.children).forEach(li => {
-    li.className = li.innerHTML === tabName ?  'active' : ''
+
+  [].forEach.call(this.el.querySelectorAll('li'), function (li) {
+    li.className = li.innerText.includes(tabName) ? 'active' : ''
   })
   this.show()
 }
 
-TabView.bindClick = function() {
-  Array.from(this.el.children).forEach(li => {
-    li.addEventListener('click', e => this.onClick(li.innerHTML))
-  })
+TabView.bindEvents = function() {
+
+  this.el.addEventListener('click', e => this.onClickTab(e));
+
 }
 
-TabView.onClick = function (tabName) {
+TabView.onClickTab = function ({target}) {
+  if(target.tagName.toLowerCase() !== 'li') return
+  const tabName = target.innerText
   this.setActiveTab(tabName)
-  this.emit('@change', {tabName})
+
+  this.emit('@changeTab', {tabName})
+  // const arrAsLi = Array.from(this.el.querySelectorAll('li'));
+  // arrAsLi.forEach( el => el.className = '')
+  // target.className = 'active'
+  // let idx = arrAsLi.findIndex( el => el.className === 'active')
+  // this.emit('@changeTab', {idx})
 }
 
 export default TabView
